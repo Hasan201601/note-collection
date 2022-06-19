@@ -8,7 +8,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import axios from "axios";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userRegister } from "../../redux/userSlice";
 
 const Register = () => {
@@ -21,16 +21,16 @@ const Register = () => {
     "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
   );
   const [message, setMessage] = useState(null);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { passwordShown, togglePassword } = useVisiblePassword();
   const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { error, loading } = useSelector((state) => state.userReducer);
   const path = location.state?.from || "/";
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log(name, email, pic);
     setMessage(null);
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");

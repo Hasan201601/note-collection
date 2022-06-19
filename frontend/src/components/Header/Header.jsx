@@ -9,7 +9,7 @@ import {
   NavDropdown,
   Offcanvas,
 } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/userSlice";
 
@@ -20,12 +20,14 @@ const Header = () => {
     dispatch(logout());
     navigate("/");
   };
-  const user = true;
+  const userInfo = useSelector((state) => state.userReducer.userInfo);
+  console.log(userInfo);
+  const { _id, name } = userInfo;
   return (
     <Navbar bg="primary" expand="md" className="">
       <Container className="m-auto">
         <Navbar.Brand>
-          <Link to="/">Note Collection</Link>
+          <Link to="/"> Collection</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
         <Navbar.Offcanvas
@@ -50,15 +52,12 @@ const Header = () => {
               </Form>
             </Nav>
             <Nav className="m-auto">
-              {user && (
+              {_id && (
                 <>
                   <Nav.Link>
                     <Link to="mynotes">My notes</Link>
                   </Nav.Link>
-                  <NavDropdown
-                    title="Hasanuzzaman Hasan"
-                    id="basic-nav-dropdown"
-                  >
+                  <NavDropdown title={name} id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.2">
                       My profile
                     </NavDropdown.Item>

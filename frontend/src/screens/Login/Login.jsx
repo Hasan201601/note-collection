@@ -4,7 +4,6 @@ import { EyeSlashFill } from "react-bootstrap-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useVisiblePassword from "../../components/hooks/useVisiblePassword";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import axios from "axios";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,10 +18,9 @@ const Login = () => {
   const path = location.state?.from || "/";
   const dispatch = useDispatch();
   const login = useSelector((state) => state);
-  const { userInfo, error, loading } = login;
+  const { error, loading } = login;
   const submitHandler = (e) => {
     e.preventDefault();
-
     dispatch(userLogin({ email, password, navigate, path }));
   };
   return (

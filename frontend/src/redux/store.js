@@ -10,9 +10,13 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { notesApi } from "./notesApi";
 import userReducer from "./userSlice";
 
-const reducers = combineReducers({ userReducer });
+const reducers = combineReducers({
+  userReducer,
+  [notesApi.reducerPath]: notesApi.reducer,
+});
 
 const persistConfig = {
   key: "root",
@@ -28,7 +32,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(notesApi.middleware),
 });
 
 export default store;

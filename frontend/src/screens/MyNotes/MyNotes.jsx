@@ -7,8 +7,10 @@ import {
   useAccordionButton,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import ErrorMessage from "../../components/ErrorMessage";
+import Loading from "../../components/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import { data } from "../../Data/Data";
+import { useNotesQuery } from "../../redux/notesApi";
 import "./MyNotes.css";
 
 function CustomToggle({ children, eventKey }) {
@@ -28,25 +30,28 @@ function CustomToggle({ children, eventKey }) {
 }
 
 const MyNotes = () => {
+  const { error, isLoading, data } = useNotesQuery();
+  console.log(data);
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
     }
   };
   return (
     <MainScreen title="Welcome Hasanuzzaman Hasan...">
-      <Link to="createnote">
+      <Link to="/createnote">
         <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
           Create New Note
         </Button>
       </Link>
-      {""}
-      {data.map((d) => (
+      {error && <ErrorMessage variant="danger">{error.message}</ErrorMessage>}
+      {isLoading && <Loading />}
+      {data?.map((d) => (
         <Accordion>
           <Card style={{ margin: 10 }} key={d._id}>
             <Card.Header
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <CustomToggle eventKey="0">{d.guid}</CustomToggle>
+              <CustomToggle eventKey="0">{d.title}</CustomToggle>
 
               <div>
                 <Button variant="outline-info">
@@ -65,12 +70,16 @@ const MyNotes = () => {
               <Card.Body>
                 <h4 className="mb-2">
                   <Badge variant="success" className="my-2">
-                    Category - {d.index}
+                    Category - {d.category}
                   </Badge>
                 </h4>
                 <blockquote className="blockquote mb-0">
+                  <p>{d.content}</p>
                   <footer className="blockquote-footer">
-                    Created on <cite title="Source Title">{d.isActive}</cite>
+                    Created on{" "}
+                    <cite title="Source Title">
+                      {d.createdAt.substring(0, 10)}
+                    </cite>
                   </footer>
                 </blockquote>
               </Card.Body>

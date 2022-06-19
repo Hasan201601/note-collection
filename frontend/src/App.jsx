@@ -8,6 +8,7 @@ import Login from "./screens/Login/Login";
 import PrivateOutlet from "./components/PrivateOutlet/PrivateOutlet";
 import NotFound from "./screens/NotFound/NotFound";
 import Register from "./screens/Register/Register";
+import CreateNote from "./screens/CreateNote/CreateNote";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/*" element={<PrivateOutlet />}>
             <Route path="mynotes" element={<MyNotes />} />
+            <Route path="createnote" element={<CreateNote />} />
           </Route>
         </Routes>
       </main>
