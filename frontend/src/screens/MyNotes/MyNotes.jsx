@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import {
   Accordion,
   Badge,
@@ -6,11 +7,12 @@ import {
   Card,
   useAccordionButton,
 } from "react-bootstrap";
+import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import { useNotesQuery } from "../../redux/notesApi";
+import { useDeleteNoteMutation, useNotesQuery } from "../../redux/notesApi";
 import "./MyNotes.css";
 
 function CustomToggle({ children, eventKey }) {
@@ -29,11 +31,15 @@ function CustomToggle({ children, eventKey }) {
   );
 }
 
-const MyNotes = () => {
+const MyNotes = ({ search }) => {
   const { error, isLoading, data } = useNotesQuery();
+
+  const [deleteNote] = useDeleteNoteMutation();
   console.log(data);
   const deleteHandler = (id) => {
+    console.log(id);
     if (window.confirm("Are you sure you want to delete?")) {
+      deleteNote(id);
     }
   };
   return (
@@ -45,48 +51,58 @@ const MyNotes = () => {
       </Link>
       {error && <ErrorMessage variant="danger">{error.message}</ErrorMessage>}
       {isLoading && <Loading />}
-      {data?.map((d) => (
-        <Accordion>
-          <Card style={{ margin: 10 }} key={d._id}>
-            <Card.Header
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <CustomToggle eventKey="0">{d.title}</CustomToggle>
-
-              <div>
-                <Button variant="outline-info">
-                  <Link to={`/note/${d._id}`}>Edit</Link>{" "}
-                </Button>
-                <Button
-                  onClick={() => deleteHandler(d._id)}
-                  variant="danger"
-                  className="mx-2"
+      {!data?.length ? (
+        <h2>"No Note FOund"</h2>
+      ) : (
+        [...data]
+          .reverse()
+          .filter((filteredNote) =>
+            filteredNote.title.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((d) => (
+            <Accordion>
+              <Card style={{ margin: 10 }} key={d._id}>
+                <Card.Header
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  Delete
-                </Button>
-              </div>
-            </Card.Header>
-            <Accordion.Collapse eventKey="0">
-              <Card.Body>
-                <h4 className="mb-2">
-                  <Badge variant="success" className="my-2">
-                    Category - {d.category}
-                  </Badge>
-                </h4>
-                <blockquote className="blockquote mb-0">
-                  <p>{d.content}</p>
-                  <footer className="blockquote-footer">
-                    Created on{" "}
-                    <cite title="Source Title">
-                      {d.createdAt.substring(0, 10)}
-                    </cite>
-                  </footer>
-                </blockquote>
-              </Card.Body>
-            </Accordion.Collapse>
-          </Card>
-        </Accordion>
-      ))}
+                  <CustomToggle eventKey="0">{d.title}</CustomToggle>
+
+                  <div>
+                    <Link to={`${d._id}`}>
+                      {" "}
+                      <Button variant="outline-info">Edit </Button>
+                    </Link>{" "}
+                    <Button
+                      onClick={() => deleteHandler(d._id)}
+                      variant="danger"
+                      className="mx-2"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </Card.Header>
+                <Accordion.Collapse eventKey="0">
+                  <Card.Body>
+                    <h4 className="mb-2">
+                      <Badge variant="success" className="my-2">
+                        Category - {d.category}
+                      </Badge>
+                    </h4>
+                    <blockquote className="blockquote mb-0">
+                      <ReactMarkdown>{d.content}</ReactMarkdown>
+                      <footer className="blockquote-footer">
+                        Created on{" "}
+                        <cite title="Source Title">
+                          {d.createdAt.substring(0, 10)}
+                        </cite>
+                      </footer>
+                    </blockquote>
+                  </Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
+          ))
+      )}
     </MainScreen>
   );
 };

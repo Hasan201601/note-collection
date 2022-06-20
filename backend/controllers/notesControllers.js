@@ -52,7 +52,9 @@ const updateNote = asyncHandler(async (req, res) => {
 });
 
 const deleteNote = asyncHandler(async (req, res) => {
+  console.log(req.params.id);
   const note = await Note.findById(req.params.id);
+  console.log(note);
   if (note) {
     if (note.user.toString() !== req.user._id.toString()) {
       res.status(401);
@@ -60,9 +62,10 @@ const deleteNote = asyncHandler(async (req, res) => {
     }
     await note.remove();
     res.json({ message: "note removed" });
+  } else {
+    res.status(404);
+    throw new Error("Note not found");
   }
-  res.status(404);
-  throw new Error("Note not found");
 });
 
 module.exports = { getNotes, createNote, getNoteById, updateNote, deleteNote };

@@ -3,7 +3,7 @@ import { REHYDRATE } from "redux-persist";
 export const notesApi = createApi({
   reducerPath: "notesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/",
+    baseUrl: "http://localhost:5000/api/notes/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().userReducer.userInfo.token;
       console.log(token);
@@ -18,17 +18,48 @@ export const notesApi = createApi({
       return action.payload[reducerPath];
     }
   },
+  tagTypes: ["notes"],
+
   endpoints: (builder) => ({
     notes: builder.query({
-      query: () => "/notes",
+      query: () => "/",
+      providesTags: ["notes"],
     }),
     createNote: builder.mutation({
       query: (data) => ({
-        url: `/notes/create`,
+        url: `/create`,
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["notes"],
+    }),
+    getSingleNote: builder.query({
+      query: (id) => ({
+        url: `/${id}`,
+      }),
+      providesTags: ["notes"],
+    }),
+    updateNote: builder.mutation({
+      query: (data) => ({
+        url: `/${data.id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["notes"],
+    }),
+    deleteNote: builder.mutation({
+      query: (id) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["notes"],
     }),
   }),
 });
-export const { useNotesQuery, useCreateNoteMutation } = notesApi;
+export const {
+  useNotesQuery,
+  useGetSingleNoteQuery,
+  useCreateNoteMutation,
+  useUpdateNoteMutation,
+  useDeleteNoteMutation,
+} = notesApi;

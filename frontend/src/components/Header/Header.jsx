@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/userSlice";
 
-const Header = () => {
+const Header = ({ setSearch }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logoutHandler = () => {
@@ -22,7 +22,6 @@ const Header = () => {
   };
   const userInfo = useSelector((state) => state.userReducer.userInfo);
   console.log(userInfo);
-  const { _id, name } = userInfo;
   return (
     <Navbar bg="primary" expand="md" className="">
       <Container className="m-auto">
@@ -47,19 +46,19 @@ const Header = () => {
                   type="search"
                   placeholder="Search"
                   className="me-2"
-                  aria-label="Search"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </Form>
             </Nav>
             <Nav className="m-auto">
-              {_id && (
+              {userInfo?._id && (
                 <>
                   <Nav.Link>
                     <Link to="mynotes">My notes</Link>
                   </Nav.Link>
-                  <NavDropdown title={name} id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.2">
-                      My profile
+                  <NavDropdown title={userInfo?.name} id="basic-nav-dropdown">
+                    <NavDropdown.Item>
+                      <Link to="/updateProfile">My Profile</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={logoutHandler}>

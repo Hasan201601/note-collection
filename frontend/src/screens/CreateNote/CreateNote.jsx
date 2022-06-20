@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
-import { useNotesQuery } from "../../redux/notesApi";
+import { useCreateNoteMutation } from "../../redux/notesApi";
 
 const CreateNote = () => {
   const [title, setTitle] = useState("");
@@ -23,21 +23,24 @@ const CreateNote = () => {
     setCategory("");
     setContent("");
   };
+  const [createNote, { isLoading, error, isSuccess }] = useCreateNoteMutation();
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (!title || !content || !category) return;
-
+    createNote({ title, content, category });
     resetHandler();
   };
 
   return (
     <MainScreen title="Create a Note">
+      {isLoading && <Loading size={50} />}
+      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+      {isSuccess && "note created successfully"}
       <Card>
         <Card.Header>Create a new Note</Card.Header>
         <Card.Body>
           <Form onSubmit={submitHandler}>
-            {/* {error && <ErrorMessage variant="danger">{error}</ErrorMessage>} */}
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -76,13 +79,15 @@ const CreateNote = () => {
                 onChange={(e) => setCategory(e.target.value)}
               />
             </Form.Group>
-            {/* {loading && <Loading size={50} />} */}
-            <Button type="submit" variant="primary">
-              Create Note
-            </Button>
-            <Button className="mx-2" onClick={resetHandler} variant="danger">
-              Reset Feilds
-            </Button>
+
+            <div className="mt-3">
+              <Button type="submit" variant="primary">
+                Create Note
+              </Button>
+              <Button className="mx-2" onClick={resetHandler} variant="danger">
+                Reset Feilds
+              </Button>
+            </div>
           </Form>
         </Card.Body>
 

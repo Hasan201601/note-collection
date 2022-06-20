@@ -5,6 +5,7 @@ const initialState = {
   userInfo: {},
   loading: false,
   error: null,
+  success: false,
 };
 
 // login thunk
@@ -49,6 +50,30 @@ export const userRegister = createAsyncThunk(
     }
   }
 );
+// update thunk
+export const updateProfile = createAsyncThunk(
+  "users/updateProfile",
+  async (body, { getState }) => {
+    const token = getState().userReducer.userInfo.token;
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/users/profile",
+        body,
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data;
+    } catch (error) {
+      return error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    }
+  }
+);
 
 // user slice
 const userSlice = createSlice({
@@ -83,6 +108,20 @@ const userSlice = createSlice({
         state.userInfo = action.payload;
       })
       .addCase(userRegister.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      //update profile actions
+      .addCase(updateProfile.pending, (state, action) => {
+        state.loading = true;
+        state.success = false;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.userInfo = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });

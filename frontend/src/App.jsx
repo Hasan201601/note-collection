@@ -9,11 +9,15 @@ import PrivateOutlet from "./components/PrivateOutlet/PrivateOutlet";
 import NotFound from "./screens/NotFound/NotFound";
 import Register from "./screens/Register/Register";
 import CreateNote from "./screens/CreateNote/CreateNote";
+import UpdateNote from "./screens/UpdateNote/UpdateNote";
+import { useState } from "react";
+import UpdateProfile from "./screens/UpdateProfile/UpdateProfile";
 
 function App() {
+  const [search, setSearch] = useState("");
   return (
     <BrowserRouter>
-      <Header />
+      <Header setSearch={setSearch} />
       <main>
         <Routes>
           <Route path="*" element={<NotFound />} />
@@ -21,8 +25,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/*" element={<PrivateOutlet />}>
-            <Route path="mynotes" element={<MyNotes />} />
+            <Route path="mynotes" element={<MyNotes search={search} />} />
             <Route path="createnote" element={<CreateNote />} />
+            <Route path="mynotes/:id" element={<UpdateNote />} />
+            <Route path="updateProfile" element={<UpdateProfile />} />
           </Route>
         </Routes>
       </main>
