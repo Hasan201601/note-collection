@@ -8,22 +8,28 @@ import { updateProfile } from "../../redux/userSlice";
 import "./UpdateProfile.css";
 
 const UpdateProfile = () => {
-  const { error, loading, userInfo, success } = useSelector(
+  const { error, loading, userInfo } = useSelector(
     (state) => state.userReducer
   );
-  const [name, setName] = useState(userInfo.name);
-  const [email, setEmail] = useState(userInfo.email);
-  const [pic, setPic] = useState(userInfo.pic);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [pic, setPic] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [picMessage, setPicMessage] = useState();
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    setName(userInfo.name);
+    setEmail(userInfo.email);
+    setPic(userInfo.pic);
+  }, [userInfo]);
   const submitHandler = (e) => {
     e.preventDefault();
     const user = { name, email, password, pic };
     dispatch(updateProfile(user));
+    !error && setSuccess(true);
   };
 
   const postDetails = (img) => {

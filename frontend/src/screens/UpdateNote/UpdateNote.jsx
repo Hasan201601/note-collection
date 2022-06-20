@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
@@ -13,11 +14,17 @@ import {
 const UpdateNote = () => {
   const { id } = useParams();
   const { isLoading, error, data } = useGetSingleNoteQuery(id);
+
   const [updateNote] = useUpdateNoteMutation();
   const [title, setTitle] = useState(data?.title);
   const [content, setContent] = useState(data?.content);
   const [category, setCategory] = useState(data?.category);
   const [date, setDate] = useState("");
+  useEffect(() => {
+    setTitle(data?.title);
+    setContent(data?.content);
+    setCategory(data?.category);
+  }, [data]);
   const resetHandler = () => {
     setTitle("");
     setCategory("");

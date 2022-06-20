@@ -1,4 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  MiddlewareAPI,
+  isRejectedWithValue,
+  Middleware,
+} from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import {
   persistReducer,
@@ -12,7 +17,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import { notesApi } from "./notesApi";
 import userReducer from "./userSlice";
-
+const initialRootState = { userReducer: {}, [notesApi.reducerPath]: [] };
 const reducers = combineReducers({
   userReducer,
   [notesApi.reducerPath]: notesApi.reducer,
@@ -23,7 +28,11 @@ const persistConfig = {
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(
+  persistConfig,
+  reducers,
+  initialRootState
+);
 
 const store = configureStore({
   reducer: persistedReducer,

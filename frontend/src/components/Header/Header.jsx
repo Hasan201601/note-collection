@@ -25,8 +25,8 @@ const Header = ({ setSearch }) => {
   return (
     <Navbar bg="primary" expand="md" className="">
       <Container className="m-auto">
-        <Navbar.Brand>
-          <Link to="/"> Collection</Link>
+        <Navbar.Brand className="text-white">
+          <Link to="/">Note Collection</Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
         <Navbar.Offcanvas

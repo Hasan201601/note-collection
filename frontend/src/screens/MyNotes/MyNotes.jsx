@@ -8,6 +8,7 @@ import {
   useAccordionButton,
 } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
@@ -33,6 +34,7 @@ function CustomToggle({ children, eventKey }) {
 
 const MyNotes = ({ search }) => {
   const { error, isLoading, data } = useNotesQuery();
+  const userInfo = useSelector((state) => state.userReducer.userInfo);
 
   const [deleteNote] = useDeleteNoteMutation();
   console.log(data);
@@ -43,7 +45,7 @@ const MyNotes = ({ search }) => {
     }
   };
   return (
-    <MainScreen title="Welcome Hasanuzzaman Hasan...">
+    <MainScreen title={`Welcome ${userInfo.name}`}>
       <Link to="/createnote">
         <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
           Create New Note

@@ -13,11 +13,11 @@ export const notesApi = createApi({
       return headers;
     },
   }),
-  extractRehydrationInfo(action, { reducerPath }) {
-    if (action.type === REHYDRATE) {
-      return action.payload[reducerPath];
-    }
-  },
+  // extractRehydrationInfo(action, { reducerPath }) {
+  //   if (action.type === REHYDRATE) {
+  //     return action.payload[reducerPath];
+  //   }
+  // },
   tagTypes: ["notes"],
 
   endpoints: (builder) => ({

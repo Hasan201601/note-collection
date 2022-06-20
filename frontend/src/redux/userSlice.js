@@ -114,12 +114,12 @@ const userSlice = createSlice({
       //update profile actions
       .addCase(updateProfile.pending, (state, action) => {
         state.loading = true;
-        state.success = false;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
         state.userInfo = action.payload;
+        state.success = false;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
