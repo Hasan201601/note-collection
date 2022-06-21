@@ -37,6 +37,6 @@ if (process.env.NODE_ENV === "production") {
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log("listening to port", PORT);
 });
