@@ -1,11 +1,13 @@
-# Getting Started with Create React App
+# Note Collection MERN stack app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Click [Here](https://note-collection-mern.herokuapp.com/) to view the website.
 
-## Available Scripts
+Note collection is one safe place for keeping your notes in one place
+
+Key features
+
+### MERN authentication
 
 In the project directory, you can run:
 
 ### `npm start`
-
-Click [Note Collection](https://note-collection-mern.herokuapp.com/) to view the website.
