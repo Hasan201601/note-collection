@@ -9,5 +9,3 @@ Key features
 ### MERN authentication
 
 In the project directory, you can run:
-
-### `npm start`
