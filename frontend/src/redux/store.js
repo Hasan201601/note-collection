@@ -1,9 +1,4 @@
-import {
-  configureStore,
-  MiddlewareAPI,
-  isRejectedWithValue,
-  Middleware,
-} from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import {
   persistReducer,
