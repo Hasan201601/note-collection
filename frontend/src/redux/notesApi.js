@@ -3,7 +3,7 @@ import { REHYDRATE } from "redux-persist";
 export const notesApi = createApi({
   reducerPath: "notesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/notes/",
+    baseUrl: "/api/notes/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().userReducer.userInfo.token;
       console.log(token);

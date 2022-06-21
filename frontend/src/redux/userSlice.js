@@ -15,7 +15,7 @@ export const userLogin = createAsyncThunk(
     try {
       console.log(email, password);
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        "/api/users/login",
         { email, password },
         { headers: { "Content-type": "application/json" } }
       );
@@ -37,7 +37,7 @@ export const userRegister = createAsyncThunk(
   async ({ name, email, password, pic, navigate, path }) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/users",
+        "/api/users",
         { name, email, password, pic },
         { headers: { "Content-type": "application/json" } }
       );
@@ -56,16 +56,12 @@ export const updateProfile = createAsyncThunk(
   async (body, { getState }) => {
     const token = getState().userReducer.userInfo.token;
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/users/profile",
-        body,
-        {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await axios.post("/api/users/profile", body, {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return data;
     } catch (error) {
       return error.response && error.response.data.message
