@@ -53,9 +53,8 @@ const MyNotes = ({ search }) => {
       </Link>
       {error && <ErrorMessage variant="danger">{error.message}</ErrorMessage>}
       {isLoading && <Loading />}
-      {!data?.length ? (
-        <h2>"No Note FOund"</h2>
-      ) : (
+      {data && data.length === 0 && <p>No Data Found</p>}
+      {data &&
         [...data]
           .reverse()
           .filter((filteredNote) =>
@@ -103,8 +102,7 @@ const MyNotes = ({ search }) => {
                 </Accordion.Collapse>
               </Card>
             </Accordion>
-          ))
-      )}
+          ))}
     </MainScreen>
   );
 };
