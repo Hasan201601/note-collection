@@ -8,4 +8,8 @@ Key features
 
 ### MERN authentication
 
-In the project directory, you can run:
+You can create your account. Your data will be shown after you login.
+
+### JWT verification
+
+Only authorized user will be able to create, update, delete his/her personal data and notes
