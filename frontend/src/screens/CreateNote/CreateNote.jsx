@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Accordion, Badge, Button, Card, Form } from "react-bootstrap";
+import {
+  Accordion,
+  Badge,
+  Button,
+  Card,
+  Form,
+  FormGroup,
+} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import { useCreateNoteMutation } from "../../redux/notesApi";
+import MDEditor from "@uiw/react-md-editor";
 
 const CreateNote = () => {
   const [title, setTitle] = useState("");
@@ -31,6 +39,7 @@ const CreateNote = () => {
     createNote({ title, content, category });
     resetHandler();
   };
+  const [value, setValue] = React.useState("**Hello world!!!**");
 
   return (
     <MainScreen title="Create a Note">
@@ -50,6 +59,15 @@ const CreateNote = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Form.Group>
+            <FormGroup>
+              <div className="container">
+                <MDEditor value={value} onChange={setValue} />
+                {/* <MDEditor.Markdown
+                  source={value}
+                  style={{ whiteSpace: "pre-wrap" }}
+                /> */}
+              </div>
+            </FormGroup>
 
             <Form.Group controlId="content">
               <Form.Label>Content</Form.Label>
