@@ -30,10 +30,10 @@ Users have the ablility to update their profile, update their image. Cloudinary 
 
 To make users post formatted and look cleaner markdown text is used with live preview functionality.
 
-### Installing dependencies
+## Installing dependencies
 
 `npm install` in root directory for backend and also do the same in frontend directoty
 
-### Run on localhost
+## Run on localhost
 
-`npm start` to run the project and it will run on localhost:5000
+`npm run build` in the frontend directory and then `npm start` from the root directory to run the project and it will run on localhost:5000.
